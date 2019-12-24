@@ -1,17 +1,17 @@
 package com.example.cabbooking;
 
-public class UploadPDF {
-  public String place;
+public class Cabbook {
+    public String place;
     public String placet;
 
     public String dest;
     public String destt;
     public String bill;
     public String currencys;
-    public UploadPDF() {
+    public Cabbook() {
     }
 
-    public UploadPDF(String place, String placet, String dest, String destt, String bill,String currencys) {
+    public Cabbook(String place, String placet, String dest, String destt, String bill, String currencys) {
         this.place=place;
         this.placet=placet;
 
@@ -39,6 +39,10 @@ public class UploadPDF {
     public String getBill() {
         return bill;
     }
+    public String getCurrency() {
+        return currencys;
+    }
+
     public void setPlace(String from)
     {
         this.place=from;
@@ -46,7 +50,7 @@ public class UploadPDF {
 
     public void setPlacet(String fromt)
     {
-       this.placet=fromt;
+        this.placet=fromt;
     }
 
     public void setDest(String to)
@@ -55,7 +59,7 @@ public class UploadPDF {
     }
     public void setDestt(String to_time)
     {
-       this.destt=to_time;
+        this.destt=to_time;
     }
 
     public void setBill(String value) {

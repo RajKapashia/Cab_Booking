@@ -2,6 +2,7 @@ package com.example.cabbooking;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -21,20 +22,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.*;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity {
-    List<UploadPDF> uploadPDFS;
+    List<Cabbook> uploadPDFS;
     TextView name,place,rides,free_rides,credits;
     ImageView imageView;
     ListView list;
-      String[] from=new String[10];
-    String[] to=new String[10];
-    String[] from_time=new String[10];
-    String[] to_time=new String[10];
-    String[] value=new String[10];
-    String[] currency=new String[10];
+    String[] from;
+    String[] to;
+    Integer[] from_time;
+    Integer[] to_time;
+    String[] value;
+    String[] currency;
+    Integer[] time;
     Integer[] imgid5;
-    ArrayList<UploadPDF> tennisModelArrayList;
+    ArrayList<Cabbook> tennisModelArrayList;
     private CustomListAdapter adapter;
+    Activity cc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +47,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         name=(TextView) findViewById(R.id.name);
         place=(TextView) findViewById(R.id.place);
-        imageView=(ImageView) findViewById(R.id.img);
+        //imageView=(ImageView) findViewById(R.id.img);
+         imageView = (ImageView)findViewById(R.id.img);
         rides=(TextView) findViewById(R.id.rides);
         free_rides=(TextView) findViewById(R.id.free_rides);
         credits=(TextView) findViewById(R.id.credits);
         list=(ListView) findViewById(R.id.list);
+        cc=this;
         String url = "https://gist.githubusercontent.com/iranjith4/522d5b466560e91b8ebab54743f2d0fc/raw/7b108e4aaac287c6c3fdf93c3343dd1c62d24faf/radius-mobile-intern.json";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -54,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                       // textView.setText("Response: " + response.toString());
+                        // textView.setText("Response: " + response.toString());
                         String s1="",s2="",s3="";
                         try {
                             JSONObject quesJson = response.getJSONObject("data").getJSONObject("profile");
@@ -76,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                             s1=quesJson.getString("value");
                             s2=quesJson.getString("currency_symbol");
                             credits.setText(s2+s1);
-                          //  JSONArray trips=response.getJSONObject("data").getJSONArray("trips");
+                            //  JSONArray trips=response.getJSONObject("data").getJSONArray("trips");
 
                        /*   int l=trips.length();
                             for (int i = 0; i <l ; i++) {
@@ -98,15 +105,25 @@ public class MainActivity extends AppCompatActivity {
 
                             }*/
                             JSONArray trips = response.getJSONObject("data").getJSONArray("trips");
-                            JSONArray dataArray1 = response.getJSONObject("data").getJSONObject("trips").getJSONArray("cost");
-                            UploadPDF playersModel = new UploadPDF();
+                            from=new String[trips.length()];
+                            to=new String[trips.length()];
+                            from_time=new Integer[trips.length()];
+                            to_time=new Integer[trips.length()];
+                            time=new Integer[trips.length()];
+                            value=new String[trips.length()];
+                            currency=new String[trips.length()];
+                            imgid5=new Integer[trips.length()];
+                            JSONObject dataArray1;// = response.getJSONObject("data").getJSONObject("trips").getJSONArray("cost");
+                            Cabbook playersModel = new Cabbook();
                             for (int i = 0; i < trips.length(); i++) {
-                                from[i] = trips.getJSONObject(i).getString("from");
-                                to[i] = trips.getJSONObject(i).getString("to");
-                                from_time[i] = trips.getJSONObject(i).getString("from_time");
-                                to_time[i] = trips.getJSONObject(i).getString("to_time");
-                                value[i] = dataArray1.getJSONObject(i).getString("value");
-                                currency[i] = dataArray1.getJSONObject(i).getString("currency");
+                                dataArray1=trips.getJSONObject(i).getJSONObject("cost");
+                                from[i] =trips.getJSONObject(i).getString("to");
+                                to[i] = trips.getJSONObject(i).getString("from");
+                                from_time[i] = trips.getJSONObject(i).getInt("from_time");
+                                to_time[i] = trips.getJSONObject(i).getInt("to_time");
+                                time[i] = trips.getJSONObject(i).getInt("trip_duration_in_mins");
+                                value[i] = dataArray1.getString("value");
+                                currency[i] =dataArray1.getString("currency_symbol");
                                 imgid5[i] = R.drawable.road;
                               /*  JSONObject dataobj = dataArray.getJSONObject(i);
                                 JSONObject dataobj1 = dataArray1.getJSONObject(i);
@@ -121,16 +138,17 @@ public class MainActivity extends AppCompatActivity {
                             }
 
 
-
-                           CustomListAdapter adapter = new CustomListAdapter(this,imgid5,from, from_time,to,to_time,to,from);
+                            CustomListAdapter adapter = new CustomListAdapter(cc,imgid5,from, from_time,to,to_time,value,currency,time);
 
                             list.setAdapter(adapter);
 
-                          //  Toast.makeText(MainActivity.this, param.toString(), Toast.LENGTH_LONG).show();
+
+                            //  Toast.makeText(MainActivity.this, param.toString(), Toast.LENGTH_LONG).show();
                         }
                         catch (Exception e){
                             Toast.makeText(MainActivity.this, "Error: "+e, Toast.LENGTH_LONG).show();
                         }
+
 
                     }
                 }, new Response.ErrorListener() {

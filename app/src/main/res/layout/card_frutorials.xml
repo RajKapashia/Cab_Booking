@@ -138,14 +138,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_alignParentBottom="true"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         >
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Travel time: "
+                            android:textColor="@color/whiteBodyColor"
+                            android:textSize="12sp"/>
                         <TextView
                             android:id="@+id/timed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Travel time: 1h65min"
+                            android:text=" wait"
                             android:textColor="@color/whiteBodyColor"
                             android:textSize="12sp"/>
 

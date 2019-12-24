@@ -13,23 +13,31 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class CustomListAdapter extends ArrayAdapter<String> {
 
 
     private final Activity context;
     private final String[] place;
-    private final String[] placet;
+    private final  Integer[] placet;
     private final String[] dest;
-    private final String[] destt;
+    private final Integer[] destt;
     private final Integer[] img;
     private final String[] value;
     private final String[] currency;
+    private final Integer[] time;
 
 
 
 
-    public CustomListAdapter(Response.Listener<JSONObject> context, Integer[] img,String[] place, String[] placet, String[] dest, String[] destt, String[] value, String[] currency) {
-        super((Context) context, R.layout.card_frutorials, place);
+    public CustomListAdapter(Activity context, Integer[] img,String[] place,  Integer[] placet, String[] dest,  Integer[] destt, String[] value, String[] currency,Integer[] time) {
+        super(context, R.layout.card_frutorials, place);
 
 
         // TODO Auto-generated constructor stub
@@ -42,6 +50,7 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         this.img = img;
         this.value = value;
         this.currency = currency;
+        this.time=time;
 
 
     }
@@ -59,14 +68,16 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         TextView plact = (TextView) rowView.findViewById(R.id.placet);
         TextView billl = (TextView) rowView.findViewById(R.id.bill);
         TextView curren = (TextView) rowView.findViewById(R.id.sym);
+        TextView tim = (TextView) rowView.findViewById(R.id.timed);
         ImageView imageView=(ImageView) rowView.findViewById(R.id.youtubeThubnail);
 
         destin.setText(dest[position]);
-        destintime.setText(destt[position]);
+        destintime.setText(getDate(destt[position]));
         plac.setText(place[position]);
-        plact.setText(placet[position]);
+        plact.setText(getDate(placet[position]));
         billl.setText(value[position]);
         curren.setText(currency[position]);
+        tim.setText(formatHoursAndMinutes(time[position]));
         imageView.setImageResource(img[position]);
 
 
@@ -74,6 +85,27 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         return rowView;
 
     };
+    public static String formatHoursAndMinutes(int totalMinutes) {
+        String minutes = Integer.toString(totalMinutes % 60);
+        minutes = minutes.length() == 1 ? "0" + minutes : minutes;
+        if((totalMinutes / 60)==0)
+            return minutes+"min";
+        else
+        return (totalMinutes / 60) +"h"+minutes+"min";
+    }
+    public  String getDate(int timestamp) {
+        try{
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, HH:mm");
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        }catch (Exception e) {
+        }
+        return "";
+    }
 
 
 }
