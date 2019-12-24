@@ -25,7 +25,7 @@ import java.lang.*;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
-    List<Cabbook> uploadPDFS;
+   // List<Cabbook> uploadPDFS;
     TextView name,place,rides,free_rides,credits;
     ImageView imageView;
     ListView list;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     String[] currency;
     Integer[] time;
     Integer[] imgid5;
-    ArrayList<Cabbook> tennisModelArrayList;
+   // ArrayList<Cabbook> tennisModelArrayList;
     private CustomListAdapter adapter;
     Activity cc;
 
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                             currency=new String[trips.length()];
                             imgid5=new Integer[trips.length()];
                             JSONObject dataArray1;// = response.getJSONObject("data").getJSONObject("trips").getJSONArray("cost");
-                            Cabbook playersModel = new Cabbook();
+                           // Cabbook playersModel = new Cabbook();
                             for (int i = 0; i < trips.length(); i++) {
                                 dataArray1=trips.getJSONObject(i).getJSONObject("cost");
                                 from[i] =trips.getJSONObject(i).getString("to");
